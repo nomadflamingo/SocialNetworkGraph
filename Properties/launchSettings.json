@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "SocialNetworkGraph": {
+      "commandName": "Project",
+      "commandLineArgs": "\"C:\\Users\\tetre\\source\\repos\\SocialNetworkGraph\\UserGraph.json\""
+    }
+  }
+}

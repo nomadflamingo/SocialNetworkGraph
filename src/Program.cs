@@ -1,53 +1,85 @@
 ﻿using SocialNetworkGraph.src.Iterators;
 using SocialNetworkGraph.src.Models;
 using SocialNetworkGraph.src.SocialNetwork;
+using System.Text.Json;
 
 class Program
 {
-    static void Main(string[] args)
+    // Method to load social network graph from a JSON file
+    public static NetworkGraph LoadGraphFromJson(string filePath)
     {
-        // Creating the social network graph
-        NetworkGraph graph = new NetworkGraph();
-
-        // Creating users
-        User alice = new User("Alice");
-        User bob = new User("Bob");
-        User charlie = new User("Charlie");
-        User diana = new User("Diana");
-        User eva = new User("Eva");
-
-        // Adding users to the graph
-        graph.AddUser(alice);
-        graph.AddUser(bob);
-        graph.AddUser(charlie);
-        graph.AddUser(diana);
-        graph.AddUser(eva);
-
-        // Establishing friendships
-        graph.AddFriendship(alice, bob);
-        graph.AddFriendship(alice, charlie);
-        graph.AddFriendship(bob, diana);
-        graph.AddFriendship(charlie, diana);
-        graph.AddFriendship(charlie, eva);
-
-        // Using the default iterator
-        Console.WriteLine("Users (arbitrary order):");
-        Iterator defaultIterator = new UsersDefaultIterator(graph);
-        while (defaultIterator.HasMore())
+        if (!File.Exists(filePath))
         {
-            User user = defaultIterator.GetNext();
-            Console.WriteLine($"{user.Name} (Friends: {user.Friends.Count})");
+            throw new FileNotFoundException($"File {filePath} not found.");
         }
 
-        Console.WriteLine();
+        string jsonString = File.ReadAllText(filePath);
+        var options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true }; 
+        JsonGraphData data = JsonSerializer.Deserialize<JsonGraphData>(jsonString, options);
 
-        // Using the iterator sorted by the number of friends
-        Console.WriteLine("Users sorted by number of friends (descending):");
-        Iterator sortedIterator = new UsersMostFriendsDescIterator(graph);
-        while (sortedIterator.HasMore())
+        NetworkGraph graph = new NetworkGraph();
+        // Dictionary to store created users by id
+        Dictionary<string, User> usersDictionary = new Dictionary<string, User>();
+
+        // Creating users
+        foreach (var jsonUser in data.Users)
         {
-            User user = sortedIterator.GetNext();
-            Console.WriteLine($"{user.Name} (Friends: {user.Friends.Count})");
+            User user = new User(jsonUser.id, jsonUser.name);
+            graph.AddUser(user);
+            usersDictionary[jsonUser.id] = user;
+        }
+
+        // Establishing friendships
+        foreach (var jsonUser in data.Users)
+        {
+            User currentUser = usersDictionary[jsonUser.id];
+            foreach (var friendId in jsonUser.friends)
+            {
+                if (usersDictionary.TryGetValue(friendId, out User friend))
+                {
+                    // Establish mutual friendship
+                    graph.AddFriendship(currentUser, friend);
+                }
+            }
+        }
+
+        return graph;
+    }
+
+    static void Main(string[] args)
+    {
+        try
+        {
+            if (args.Length < 1)
+            {
+                throw new ArgumentException("No arguments provided. Please specify a path to \"UserGraph.json\" file");
+            }
+            // Load the graph from the JSON file
+            NetworkGraph graph = LoadGraphFromJson(args[0]);
+
+            // Using the default iterator
+            Console.WriteLine("Users (arbitrary order):");
+            Iterator defaultIterator = new UsersDefaultIterator(graph);
+            while (defaultIterator.HasMore())
+            {
+                User user = defaultIterator.GetNext();
+                Console.WriteLine($"{user.Name} (Friends: {user.Friends.Count})");
+            }
+
+            Console.WriteLine();
+
+            // Using the sorted iterator (by number of friends in descending order)
+            Console.WriteLine("Users sorted by number of friends (descending):");
+            Iterator sortedIterator = new UsersMostFriendsDescIterator(graph);
+            while (sortedIterator.HasMore())
+            {
+                User user = sortedIterator.GetNext();
+                Console.WriteLine($"{user.Name} (Friends: {user.Friends.Count})");
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine("An error occurred: " + ex.Message);
         }
     }
 }
