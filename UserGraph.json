@@ -1,0 +1,29 @@
+{
+  "users": [
+    {
+      "id": "1",
+      "name": "Alice",
+      "friends": [ "2", "3" ]
+    },
+    {
+      "id": "2",
+      "name": "Bob",
+      "friends": [ "1", "4" ]
+    },
+    {
+      "id": "3",
+      "name": "Charlie",
+      "friends": [ "1", "4", "5" ]
+    },
+    {
+      "id": "4",
+      "name": "Diana",
+      "friends": [ "2", "3" ]
+    },
+    {
+      "id": "5",
+      "name": "Eva",
+      "friends": [ "3" ]
+    }
+  ]
+}
