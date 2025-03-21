@@ -13,7 +13,7 @@ Alternatively, you can try building the solution with `msbuild` or any other too
 ### Linux
 This approach was not tested, but the installation process for .NET on Linux has been explained in this tutorial: https://learn.microsoft.com/en-us/dotnet/core/install/linux?tabs=netcore2x
 
-After installing, you should be able to invoke msbuild with `dotnet build SocialNetworkGraph.csproj` and launch the executable with `SocialNetworkGraph.exe "full path to UserGraph.json"`
+After installing, you should be able to invoke msbuild with `dotnet build SocialNetworkGraph.csproj` and launch the executable with `SocialNetworkGraph "full path to UserGraph.json"`
 
 
 ## Expected output
