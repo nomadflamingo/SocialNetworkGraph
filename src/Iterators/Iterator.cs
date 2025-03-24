@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 namespace SocialNetworkGraph.src.Iterators
 {
     // Iterator interface
-    public interface Iterator
+    public interface IIterator
     {
         bool HasMore();
         User GetNext();

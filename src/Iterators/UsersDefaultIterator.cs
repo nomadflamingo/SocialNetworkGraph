@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 namespace SocialNetworkGraph.src.Iterators
 {
     // Iterator for traversing users in an arbitrary order
-    public class UsersDefaultIterator : Iterator
+    public class UsersDefaultIterator : IIterator
     {
         private List<User> collection;
         private int currentIndex;

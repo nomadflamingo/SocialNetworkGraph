@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 namespace SocialNetworkGraph.src.SocialNetwork
 {
     // Social network graph class that implements IterableCollection
-    public class NetworkGraph : IterableCollection
+    public class NetworkGraph : IIterableCollection
     {
         public List<User> Users { get; private set; }
 
@@ -32,7 +32,7 @@ namespace SocialNetworkGraph.src.SocialNetwork
         }
 
         // By default, create a default iterator
-        public Iterator CreateIterator()
+        public IIterator CreateIterator()
         {
             return new UsersDefaultIterator(this);
         }

@@ -8,8 +8,8 @@ using System.Threading.Tasks;
 namespace SocialNetworkGraph.src.SocialNetwork
 {
     // Iterable collection interface, which can create an iterator
-    public interface IterableCollection
+    public interface IIterableCollection
     {
-        Iterator CreateIterator();
+        IIterator CreateIterator();
     }
 }

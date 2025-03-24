@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 namespace SocialNetworkGraph.src.Iterators
 {
     // Iterator for traversing users sorted by the number of friends in descending order
-    public class UsersMostFriendsDescIterator : Iterator
+    public class UsersMostFriendsDescIterator : IIterator
     {
         private List<User> collection;
         private int currentIndex;

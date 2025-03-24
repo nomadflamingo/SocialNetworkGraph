@@ -24,7 +24,7 @@ class Program
         // Creating users
         foreach (var jsonUser in data.Users)
         {
-            User user = new User(jsonUser.id, jsonUser.name);
+            User user = new(jsonUser.id, jsonUser.name);
             graph.AddUser(user);
             usersDictionary[jsonUser.id] = user;
         }
@@ -59,7 +59,7 @@ class Program
 
             // Using the default iterator
             Console.WriteLine("Users (arbitrary order):");
-            Iterator defaultIterator = new UsersDefaultIterator(graph);
+            IIterator defaultIterator = new UsersDefaultIterator(graph);
             while (defaultIterator.HasMore())
             {
                 User user = defaultIterator.GetNext();
@@ -70,7 +70,7 @@ class Program
 
             // Using the sorted iterator (by number of friends in descending order)
             Console.WriteLine("Users sorted by number of friends (descending):");
-            Iterator sortedIterator = new UsersMostFriendsDescIterator(graph);
+            IIterator sortedIterator = new UsersMostFriendsDescIterator(graph);
             while (sortedIterator.HasMore())
             {
                 User user = sortedIterator.GetNext();
